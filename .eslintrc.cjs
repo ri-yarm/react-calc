@@ -16,6 +16,7 @@ module.exports = {
   },
   plugins: ['react-refresh', 'prettier', '@typescript-eslint'],
   rules: {
+    "react/jsx-props-no-spreading": "off",
     'prettier/prettier': 'error',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 'off',

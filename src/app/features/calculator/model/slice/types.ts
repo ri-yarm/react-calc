@@ -1,8 +1,7 @@
 export type HistoryEntry = {
   id: string;
-  expression: string;
-  result: string;
-  timestamp: string;
+  date: Date;
+  operation: string;
 };
 
 export type HistoryEntryArray = HistoryEntry[];
