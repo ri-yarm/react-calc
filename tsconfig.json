@@ -24,8 +24,11 @@
     /* Absolute Imports */
     "baseUrl": "./",
     "paths": {
-      "@/Assets/*": ["*", "src/Assets/*"],
-      "@/Components/*": ["*", "src/Components/*"]
+      "@/app/*": ["src/app/*"],
+      "@/features/*": ["src/app/features/*"],
+      "@/shared/*": ["src/app/shared/*"],
+      "@/ui/*": ["src/app/shared/ui/*"],
+      "@/store": ["src/app/store.ts"]
     }
   },
   "include": ["src"],
