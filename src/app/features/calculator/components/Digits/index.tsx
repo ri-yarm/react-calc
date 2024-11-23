@@ -1,28 +1,36 @@
-import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import Button from '@/ui/Button';
-import { updateDisplay } from '@/features/calculator/model/slice';
-import { useAppDispatch, useAppSelector } from '@/app/hooks/useStore';
+import { useAppDispatch } from '@/app/hooks/useStore';
+import { inputNumber } from '@/features/calculator/model/slice';
 
 const digits = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', ','];
 
 const Digits = () => {
   const dispatch = useAppDispatch();
-  const display = useAppSelector((state) => state.calculator.display);
 
-  const handleClick = (value: string) => {
-    dispatch(updateDisplay(display === '0' ? value : display + value));
+  const handleClick = (number: string) => {
+    dispatch(inputNumber(number));
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-        {digits.map((digit) => (
-          <Grid size={2} key={digit}>
-            <Button onClick={() => handleClick(digit)}>{digit}</Button>
-          </Grid>
-        ))}
-      </Grid>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '8px',
+      }}
+    >
+      {digits.map((digit) => (
+        <Box
+          key={digit}
+          sx={{
+            flex: digit === '0' ? '0 0 64%' : '0 0 30%',
+            textAlign: 'center',
+          }}
+        >
+          <Button onClick={() => handleClick(digit)}>{digit}</Button>
+        </Box>
+      ))}
     </Box>
   );
 };

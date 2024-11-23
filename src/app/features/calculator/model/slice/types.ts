@@ -8,5 +8,7 @@ export type HistoryEntryArray = HistoryEntry[];
 
 export interface CalculatorState {
   display: string;
-  history: HistoryEntry[];
+  previousDisplay: string;
+  operator: string | null;
+  history: HistoryEntryArray;
 }
