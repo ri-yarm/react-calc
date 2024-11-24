@@ -19,9 +19,14 @@ const SpecialButtons = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '8px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
       {specialButtons.map((button) => (
-        <Button key={button} onClick={() => handleClick(button)} sx={{ flex: 1 }}>
+        <Button key={button} onClick={() => handleClick(button)}>
           {button}
         </Button>
       ))}

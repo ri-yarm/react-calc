@@ -14,18 +14,17 @@ const Digits = () => {
 
   return (
     <Box
+      data-testid="digitsContain"
       sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '8px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
       }}
     >
       {digits.map((digit) => (
         <Box
           key={digit}
           sx={{
-            flex: digit === '0' ? '0 0 64%' : '0 0 30%',
-            textAlign: 'center',
+            gridColumn: digit === '0' ? 'span 2' : 'auto',
           }}
         >
           <Button onClick={() => handleClick(digit)}>{digit}</Button>

@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CalculatorState } from '@/features/calculator/model/slice/types';
+import { CalculatorState, HistoryEntry } from '@/features/calculator/model/slice/types';
+import formatDate from '@/shared/utilities/date';
+import { addToHistory, fetchHistory } from '@/features/calculator/model/api';
 
 const initialState: CalculatorState = {
   display: '0',
@@ -8,7 +10,7 @@ const initialState: CalculatorState = {
   history: [],
 };
 
-const index = createSlice({
+const calculator = createSlice({
   name: 'calculator',
   initialState,
   reducers: {
@@ -20,16 +22,15 @@ const index = createSlice({
       state.previousDisplay = state.display;
       state.display = '0';
     },
-    updateDisplay(state, action: PayloadAction<string>) {
-      return {
-        ...state,
-        display: action.payload,
-      };
-    },
     calculateResult(state) {
       const prev = parseFloat(state.previousDisplay);
       const current = parseFloat(state.display);
       let result = 0;
+
+      if (Number.isNaN(prev) || Number.isNaN(current)) {
+        state.display = 'Ошибка';
+        return;
+      }
 
       switch (state.operator) {
         case '+':
@@ -45,13 +46,19 @@ const index = createSlice({
           result = prev / current;
           break;
         default:
-          break;
+          result = 0;
+          return;
       }
+
+      const history: Omit<HistoryEntry, 'id'> = {
+        operation: `${formatDate(new Date())} ${prev} ${state.operator} ${current} = ${result}`,
+      };
+
+      state.history.push(history);
 
       state.display = result.toString();
       state.previousDisplay = '';
       state.operator = null;
-      state.history.push(`${prev} ${state.operator} ${current} = ${result}`);
     },
     clear(state) {
       state.display = '0';
@@ -64,17 +71,23 @@ const index = createSlice({
     calculatePercentage(state) {
       state.display = (parseFloat(state.display) / 100).toString();
     },
-    // addHistory(state, action: PayloadAction<HistoryEntry>) {
-    //   state.history.push(action.payload);
-    // },
-    // setHistory(state, action: PayloadAction<HistoryEntryArray>) {
-    //   return {
-    //     ...state,
-    //     history: action.payload,
-    //   };
-    // },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchHistory.fulfilled, (state, action: PayloadAction<HistoryEntry[]>) => {
+      // reverse потмоу что мокапи так отдаёт
+      state.history = action.payload;
+    });
+    builder.addCase(fetchHistory.rejected, () => {
+      alert('ошибка при загрузке истории');
+    });
+    builder.addCase(addToHistory.fulfilled, () => {
+      // можем пеоеиспользовать где нибудь
+    });
+    builder.addCase(addToHistory.rejected, () => {
+      alert('ошибка при добавлении в историю');
+    });
   },
 });
 
-export const { inputNumber, setOperator, calculateResult, clear, toggleSign, calculatePercentage } = index.actions;
-export default index.reducer;
+export const { inputNumber, setOperator, calculateResult, clear, toggleSign, calculatePercentage } = calculator.actions;
+export default calculator.reducer;

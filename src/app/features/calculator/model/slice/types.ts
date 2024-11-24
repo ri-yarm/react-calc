@@ -1,6 +1,5 @@
 export type HistoryEntry = {
   id: string;
-  date: Date;
   operation: string;
 };
 

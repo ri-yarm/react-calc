@@ -1,19 +1,22 @@
 import Box from '@mui/material/Box';
 import { useAppDispatch, useAppSelector } from '@/app/hooks/useStore';
 import Button from '@/ui/Button';
-import { calculateResult, setOperator } from '@/features/calculator/model/slice';
+import { setOperator } from '@/features/calculator/model/slice';
+import Colors from '@/app/constant/Styles/colors';
+import { calculateAndAddToHistory } from '@/features/calculator/model/api';
 
-const operations = ['+', '-', '*', '/', '='];
+const operations = ['/', '*', '-', '+', '='];
 
 const Operations = () => {
   const dispatch = useAppDispatch();
   const operator = useAppSelector((state) => state.calculator.operator);
+  // const history = useAppSelector((state) => state.calculator.history);
 
   const isActiveOperator = (op: string) => operator === op;
 
   const handleClick = (item: string) => {
     if (item === '=') {
-      dispatch(calculateResult());
+      dispatch(calculateAndAddToHistory());
     } else {
       dispatch(setOperator(item));
     }
@@ -25,11 +28,17 @@ const Operations = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
-        gap: '8px',
       }}
     >
       {operations.map((op) => (
-        <Button key={op} onClick={() => handleClick(op)} color={isActiveOperator(op) ? 'error' : 'primary'}>
+        <Button
+          key={op}
+          onClick={() => handleClick(op)}
+          sx={{
+            backgroundColor: isActiveOperator(op) ? Colors.RED : Colors.ORANGE,
+            color: Colors.WHITE,
+          }}
+        >
           {op}
         </Button>
       ))}
