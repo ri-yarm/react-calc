@@ -27,6 +27,10 @@ const calculator = createSlice({
       const current = parseFloat(state.display);
       let result = 0;
 
+      if (state.display === '0' && state.previousDisplay === '') {
+        return;
+      }
+
       if (Number.isNaN(prev) || Number.isNaN(current)) {
         state.display = 'Ошибка';
         return;
@@ -69,7 +73,14 @@ const calculator = createSlice({
       state.display = (parseFloat(state.display) * -1).toString();
     },
     calculatePercentage(state) {
-      state.display = (parseFloat(state.display) / 100).toString();
+      const result = parseFloat(state.display) / 100;
+
+      const history: Omit<HistoryEntry, 'id'> = {
+        operation: `${formatDate(new Date())} ${state.display} % ${100} = ${result}`,
+      };
+
+      state.history.push(history);
+      state.display = result.toString();
     },
   },
   extraReducers: (builder) => {

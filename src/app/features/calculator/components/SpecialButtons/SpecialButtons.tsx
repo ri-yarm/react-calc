@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Button from '@/ui/Button';
-import { calculatePercentage, clear, toggleSign } from '@/features/calculator/model/slice';
+import { clear, toggleSign } from '@/features/calculator/model/slice';
 import { useAppDispatch } from '@/app/hooks/useStore';
+import { calculatePercentageAndAddToHistory } from '@/features/calculator/model/api';
 
 const specialButtons = ['AC', '+/-', '%'];
 
@@ -14,7 +15,7 @@ const SpecialButtons = () => {
     } else if (operator === '+/-') {
       dispatch(toggleSign());
     } else if (operator === '%') {
-      dispatch(calculatePercentage());
+      dispatch(calculatePercentageAndAddToHistory());
     }
   };
 

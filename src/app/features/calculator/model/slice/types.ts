@@ -1,5 +1,5 @@
 export type HistoryEntry = {
-  id: string;
+  id?: string;
   operation: string;
 };
 

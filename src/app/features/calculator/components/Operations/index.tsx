@@ -17,6 +17,8 @@ const Operations = () => {
   const handleClick = (item: string) => {
     if (item === '=') {
       dispatch(calculateAndAddToHistory());
+    } else if (item === operator) {
+      dispatch(calculateAndAddToHistory());
     } else {
       dispatch(setOperator(item));
     }
